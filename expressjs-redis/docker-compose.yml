@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  redis-server:
+    image: bitnami/redis:latest
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+    restart: always
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    ports:
+      - '8001:8001'
+  node-app:
+    build:
+      dockerfile: dockerfile.develop
+      context: .
+    ports:
+      - '5002:5000'
+    restart: always
+    depends_on:
+      - redis-server
